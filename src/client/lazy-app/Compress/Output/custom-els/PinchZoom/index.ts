@@ -217,14 +217,14 @@ export default class PinchZoom extends HTMLElement {
     // Ensure _positioningEl can't move beyond out-of-bounds.
     // Correct for x
     if (topLeft.x > thisBounds.width) {
-      x += thisBounds.width - topLeft.x;
+      x += thisBounds.width - bottomRight.x;
     } else if (bottomRight.x < 0) {
       x += -bottomRight.x;
     }
 
     // Correct for y
     if (topLeft.y > thisBounds.height) {
-      y += thisBounds.height - topLeft.y;
+      y += thisBounds.height - bottomRight.y;
     } else if (bottomRight.y < 0) {
       y += -bottomRight.y;
     }
