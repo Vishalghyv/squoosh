@@ -7,6 +7,7 @@ import * as style from './style.css';
 import 'add-css:./style.css';
 import { shallowEqual } from '../../util';
 import {
+  ToggleAntiAliasingIcon,
   ToggleBackgroundIcon,
   AddIcon,
   RemoveIcon,
@@ -35,6 +36,7 @@ interface State {
   scale: number;
   editingScale: boolean;
   altBackground: boolean;
+  antiAliasing: boolean;
 }
 
 const scaleToOpts: ScaleToOpts = {
@@ -49,6 +51,7 @@ export default class Output extends Component<Props, State> {
     scale: 1,
     editingScale: false,
     altBackground: false,
+    antiAliasing: false,
   };
   canvasLeft?: HTMLCanvasElement;
   canvasRight?: HTMLCanvasElement;
@@ -144,6 +147,12 @@ export default class Output extends Component<Props, State> {
   private rightDrawable(props: Props = this.props): ImageData | undefined {
     return props.rightCompressed || (props.source && props.source.preprocessed);
   }
+
+  private toggleAliasing = () => {
+    this.setState({
+      antiAliasing: !this.state.antiAliasing,
+    });
+  };
 
   private toggleBackground = () => {
     this.setState({
@@ -255,7 +264,7 @@ export default class Output extends Component<Props, State> {
 
   render(
     { mobileView, leftImgContain, rightImgContain, source }: Props,
-    { scale, editingScale, altBackground }: State,
+    { scale, editingScale, altBackground, antiAliasing }: State,
   ) {
     const leftDraw = this.leftDrawable();
     const rightDraw = this.rightDrawable();
@@ -285,7 +294,9 @@ export default class Output extends Component<Props, State> {
               ref={linkRef(this, 'pinchZoomLeft')}
             >
               <canvas
-                class={style.pinchTarget}
+                class={`${style.pinchTarget} ${
+                  antiAliasing ? style.pixelated : ''
+                }`}
                 ref={linkRef(this, 'canvasLeft')}
                 width={leftDraw && leftDraw.width}
                 height={leftDraw && leftDraw.height}
@@ -301,7 +312,9 @@ export default class Output extends Component<Props, State> {
               ref={linkRef(this, 'pinchZoomRight')}
             >
               <canvas
-                class={style.pinchTarget}
+                class={`${style.pinchTarget} ${
+                  antiAliasing ? style.pixelated : ''
+                }`}
                 ref={linkRef(this, 'canvasRight')}
                 width={rightDraw && rightDraw.width}
                 height={rightDraw && rightDraw.height}
@@ -315,6 +328,13 @@ export default class Output extends Component<Props, State> {
           </two-up>
         </div>
         <div class={style.controls}>
+          {scale >= 1 && (
+            <div class={style.buttonGroup}>
+              <button class={style.singleButton} onClick={this.toggleAliasing}>
+                <ToggleAntiAliasingIcon />
+              </button>
+            </div>
+          )}
           <div class={style.buttonGroup}>
             <button class={style.firstButton} onClick={this.zoomOut}>
               <RemoveIcon />
