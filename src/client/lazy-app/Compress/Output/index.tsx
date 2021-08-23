@@ -328,7 +328,7 @@ export default class Output extends Component<Props, State> {
           </two-up>
         </div>
         <div class={style.controls}>
-          {scale >= 1 && (
+          {scale > 1 && (
             <div class={style.buttonGroup}>
               <button class={style.singleButton} onClick={this.toggleAliasing}>
                 <ToggleAliasingIcon />
