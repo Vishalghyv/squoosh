@@ -149,11 +149,9 @@ export default class Output extends Component<Props, State> {
   }
 
   private toggleAliasing = () => {
-    if (!isSafari()) {
-      this.setState((state) => ({
-        aliasing: !state.aliasing,
-      }));
-    }
+    this.setState((state) => ({
+      aliasing: !state.aliasing,
+    }));
   };
 
   private toggleBackground = () => {
@@ -330,7 +328,7 @@ export default class Output extends Component<Props, State> {
           </two-up>
         </div>
         <div class={style.controls}>
-          {scale > 1 && (
+          {scale > 1 && !isSafari && (
             <div class={style.buttonGroup}>
               <button class={style.singleButton} onClick={this.toggleAliasing}>
                 <ToggleAliasingIcon />
