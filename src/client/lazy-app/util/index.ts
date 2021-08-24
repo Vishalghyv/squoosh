@@ -295,3 +295,13 @@ export async function abortable<T>(
     }),
   ]);
 }
+
+/**
+ * Checks if render engine is Safari.
+ */
+export function isSafari(): boolean {
+  return (
+    /Safari\//.test(navigator.userAgent) &&
+    !/Chrom(e|ium)\//.test(navigator.userAgent)
+  );
+}

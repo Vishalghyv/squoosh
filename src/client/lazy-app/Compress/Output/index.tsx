@@ -5,7 +5,7 @@ import './custom-els/PinchZoom';
 import './custom-els/TwoUp';
 import * as style from './style.css';
 import 'add-css:./style.css';
-import { shallowEqual } from '../../util';
+import { shallowEqual, isSafari } from '../../util';
 import {
   ToggleAliasingIcon,
   ToggleBackgroundIcon,
@@ -149,9 +149,11 @@ export default class Output extends Component<Props, State> {
   }
 
   private toggleAliasing = () => {
-    this.setState({
-      aliasing: !this.state.aliasing,
-    });
+    if (!isSafari()) {
+      this.setState((state) => ({
+        aliasing: !state.aliasing,
+      }));
+    }
   };
 
   private toggleBackground = () => {
